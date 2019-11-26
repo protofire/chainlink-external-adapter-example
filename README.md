@@ -1,0 +1,1 @@
+# chainlink-external-adapter-sample
