@@ -1,26 +1,40 @@
 # chainlink-external-adapter-sample
-1- Run a Chainlink node
+
+This POC creates an External Adaptor, that returns 4 uint64 packed into a bytes32, which is executed by a Job, triggered by an External Initiator, that at the end sends a tx to a smart contract with the result of the External Adaptor which unpack and saves the 4 uint64.
+
+It is advaisable to start by reading [Chainlink Docs](https://docs.chain.link) since this involves several componenent from Chainlink arquitercture like running a Chainlink Node, creating Jobs, Bridges and External Initiators in the node, and deploying External Adaptor functions.
+
+### Steps for running this POC
+
+#### 1- Run a Chainlink node
+
   https://docs.chain.link/docs/running-a-chainlink-node
+
   - Within .chainlink-kovan folder create a .env file, copy content of .env.example and update ETH_URL with your Infura PROJECT_ID
+
   - Run: `$ docker run -p 6688:6688 -v PROJECT_PATH:/chainlink -it --env-file=.env smartcontract/chainlink local n` where PROJECT_PATH is the path to the root of this folder.
 
   The first time running the image, it will ask you for a password and confirmation. This will be your wallet password that you can use to unlock the keystore file generated for you. Then, you'll be prompted to enter an API Email and Password. The Chainlink node can be supplied with files for the wallet password and API email and password (on separate lines) on startup so that you don't need to enter credentials when starting the node. You can create an API file by running the following:
+
   - `echo "user@example.com" > .api`
   - `echo "password" >> .api`
   - `echo "my_wallet_password" > .password`
 
   And from now on you will startup the node running the following command within .chainlink-koven folder:
+
   - `docker run -p 6688:6688 -v PROJECT_PATH/.chainlink-kovan:/chainlink -it --env-file=.env smartcontract/chainlink local n -p /chainlink/.password -a /chainlink/.api`
 
+#### 2- Deploy Smart contract
 
-2- Deploy Smart contract
   - Deploy `TestPacked.sol` from `contract` folder on Kovan testnet
   - Save its address
 
-3- Deploy External Adaptor function
+#### 3- Deploy External Adaptor function
+
   - Follow the steps from https://chainlinkadapters.com/guides/run-external-adapter-on-gcp for deploying the `external-adaptor` as a Cloud Function in GCP
 
-4- Create bridge for the External Adaptor
+#### 4- Create bridge for the External Adaptor
+
   https://docs.chain.link/docs/node-operators
 
   External adapters are added to the Chainlink node by creating a bridge type. Bridges define the task's name and URL of the external adapter. When a task type is received that is not one of the core adapters, the node will search for a bridge type with that name, utilizing the bridge to your external adapter. Bridge and task type names are case insensitive.
@@ -29,13 +43,15 @@
 
   The Bridge Name should be unique to the local node, and the Bridge URL should be the URL of your external adapter, whether local or on a separate machine.
 
-5- Deploy a External Initiator NoOp function in GCP
+#### 5- Deploy a External Initiator NoOp function in GCP
 
-6- Create External Initiator in chainlink node
+#### 6- Create External Initiator in chainlink node
 
   - `docker ps`
+
   The output would be similar to:
-  ```
+
+  ```bash
   CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                              NAMES
   436882efd51d        smartcontract/chainlink   "./chainlink-launche…"   33 minutes ago      Up 21 minutes       6688/tcp, 0.0.0.0:6688->6688/tcp   chainlink
   ```
@@ -44,19 +60,19 @@
 
   This changes the prompt to something similar to:
 
-  ```
+  ```bash
   root@436882efd51d:~#
   ```
 
   Log in by running:
 
-  ```
+  ```bash
   chainlink admin login
   ```
 
   Create the External Initiator with:
 
-  ```
+  ```bash
   chainlink initiators create NAME URL
   ```
 
@@ -66,7 +82,7 @@
 
   After runing the previous command you will get somthing like:
 
-  ```
+  ```bash
   ╔ External Initiator Credentials:
   ╬═════════╬════════════════════════════════════════════════════════════════════╬══════════════════════════════════╬══════════════════════════════════════════════════════════════════╬══════════════════════════════════════════════════════════════════╬══════════════════════════════════════════════════════════════════╬
   ║  NAME   ║                                URL                                 ║            ACCESSKEY             ║                              SECRET                              ║                          OUTGOINGTOKEN                           ║                          OUTGOINGSECRET                          ║
@@ -76,11 +92,11 @@
   root@0bc4243c3592:~# exit
   ```
 
-7- Create job for external initiator
+#### 7- Create job for external initiator
 
 Create a job in the node like the following one, to be triggered by the External Initiator.
 
-```
+```javascript
   {
     "initiators": [
       {
@@ -103,10 +119,13 @@ Create a job in the node like the following one, to be triggered by the External
   }
 ```
 
-8- Install, configure and run external-initiator
+#### 8- Install, configure and run external-initiator
+
 - `cd external-initiator`
 - `yarn` or `npm install`
 - Create a .env file, copy content of .env.example and update `ACCESSKEY` and `SECRET` with what you got in step 6, and `JOB_ID` you got from step 7
 - `yarn start` or `npm start`
 
-9- Go to etherscan and check transactions for contract deployd on step 2, you can also check public values `a`, `b`, `c` and `d` in the deployed contract, they should be different from 0
+#### 9- Check the result
+
+Go to etherscan and check transactions for contract deployd on step 2, you can also check public values `a`, `b`, `c` and `d` in the deployed contract, they should be different from 0
