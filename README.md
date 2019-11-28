@@ -18,7 +18,7 @@ This POC creates an External Adaptor that returns 4 uint64 packed into a bytes32
   ```
   (where `PROJECT_PATH` is the path to the root of this directory).
 
-  The first time running the docker image, you will asked for a password and confirmation. This will be your wallet password, used for unlocking the generated keystore file. Then, you will be prompted to enter an API email and password.
+  The first time running the docker image, you will be asked for a password and confirmation. This will be your wallet password, used for unlocking the generated keystore file. Then, you will be prompted to enter an API email and password.
 
   The Chainlink node can be supplied with files for the wallet password and API email and password (on separate lines) on startup so that you don't need to enter credentials when starting the node. You can create an API file by running the following:
 
