@@ -59,3 +59,12 @@ typings/
 
 # next.js build output
 .next
+
+.chainlink-kovan/tempkeys/
+.chainlink-kovan/.api
+.chainlink-kovan/.password
+.chainlink-kovan/chainlink.lock
+.chainlink-kovan/cookie
+.chainlink-kovan/db.sqlite3
+.chainlink-kovan/log.jsonl
+.chainlink-kovan/secret
