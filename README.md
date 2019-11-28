@@ -1,8 +1,8 @@
 # Chainlink: External Adapter example
 
-This POC creates an External Adaptor that returns 4 uint64 packed into a bytes32. This External Adaptor is executed by a Job, which is triggered by an External Initiator. Finally, this Job sends a TX to a Smart Contract with the result of the External Adaptor, unpacking and saving the 4 uint64.
+This POC creates an External Adapter that returns 4 uint64 packed into a bytes32. This External Adapter is executed by a Job, which is triggered by an External Initiator. Finally, this Job sends a TX to a Smart Contract with the result of the External Adapter, unpacking and saving the 4 uint64.
 
-**Note:** The following steps require some basic knowledge about the Chainlink stack: how to run a Chainlink Node, create Jobs, Bridges and External Initiators in the node, and deploy External Adaptor functions. It is advisable to start by reading the [Chainlink Docs](https://docs.chain.link).
+**Note:** The following steps require some basic knowledge about the Chainlink stack: how to run a Chainlink Node, create Jobs, Bridges and External Initiators in the node, and deploy External Adapter functions. It is advisable to start by reading the [Chainlink Docs](https://docs.chain.link).
 
 ### Steps for running this POC
 
@@ -39,11 +39,11 @@ This POC creates an External Adaptor that returns 4 uint64 packed into a bytes32
   - Deploy `TestPacked.sol` from `contract` directory on Kovan testnet
   - Save its address
 
-#### 3. Deploy External Adaptor function
+#### 3. Deploy External Adapter function
 
-  - Follow the steps from https://chainlinkadapters.com/guides/run-external-adapter-on-gcp for deploying the `external-adaptor` as a Cloud Function in GCP.
+  - Follow the steps from https://chainlinkadapters.com/guides/run-external-adapter-on-gcp for deploying the `external-adapter` as a Cloud Function in GCP.
 
-#### 4. Create bridge for the External Adaptor
+#### 4. Create bridge for the External Adapter
 
   Reference docs: https://docs.chain.link/docs/node-operators
 
